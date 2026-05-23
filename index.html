@@ -9,16 +9,6 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header class="appHeader">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">RL</div>
-        <div class="brandText">
-          <div class="title">MMR Tracker</div>
-          <div class="subtitle">Rapide: +8/+9/+10 (et négatif)</div>
-        </div>
-      </div>
-    </header>
-
     <div id="rotateOverlay" class="rotateOverlay" role="dialog" aria-modal="true" aria-label="Mode paysage requis">
       <div class="rotateCard">
         <div class="rotateTitle">Passe en mode paysage</div>
@@ -33,73 +23,68 @@
       </div>
     </div>
 
-    <main class="layout">
-      <section class="controls card">
-        <div class="controlsInner">
-          <div class="sectionLabel">Boutons</div>
-          <div id="quickButtons" class="quickRow center" aria-label="Boutons rapides"></div>
+    <div id="optionsOverlay" class="optionsOverlay" role="dialog" aria-modal="true" aria-label="Options">
+      <div class="optionsCard">
+        <div class="optionsTop">
+          <div class="optionsTitle">Options</div>
+          <button id="closeOptionsBtn" class="ghostBtn" type="button">Fermer</button>
+        </div>
+        <label class="field">
+          <span>MMR actuel (optionnel)</span>
+          <input id="currentMmrInput" inputmode="numeric" placeholder="ex: 1308" />
+        </label>
+        <div class="customRow">
+          <input id="customDeltaInput" inputmode="numeric" placeholder="delta ex: +12 / -15" />
+          <button id="addCustomBtn" class="primaryBtn" type="button">Ajouter</button>
+        </div>
+      </div>
+    </div>
 
-          <div class="sectionLabel">Delta perso</div>
-          <div class="customRow center">
-            <input id="customDeltaInput" inputmode="numeric" placeholder="ex: +12 ou -15" />
-            <button id="addCustomBtn" class="primaryBtn" type="button">Ajouter</button>
-          </div>
-
-          <div class="sectionLabel">Bouton perso</div>
-          <div class="customRow center">
-            <input id="customQuickBtnInput" inputmode="numeric" placeholder="ex: +7 ou -12" />
-            <button id="addQuickBtn" class="primaryBtn" type="button">Ajouter bouton</button>
-          </div>
-          <div class="quickManage center">
-            <div class="hint">Astuce: ajoute tes valeurs fréquentes, puis clique dessus comme +8.</div>
-            <div id="quickManageList" class="chipRow" aria-label="Gestion des boutons rapides"></div>
-          </div>
+    <main class="deckLayout">
+      <section class="deck card" aria-label="Stream deck">
+        <div id="deckButtons" class="deckButtons">
+          <button class="deckBtn pos" data-delta="8" type="button">+8</button>
+          <button class="deckBtn pos" data-delta="9" type="button">+9</button>
+          <button class="deckBtn pos" data-delta="10" type="button">+10</button>
+          <button class="deckBtn neg" data-delta="-8" type="button">-8</button>
+          <button class="deckBtn neg" data-delta="-9" type="button">-9</button>
+          <button class="deckBtn neg" data-delta="-10" type="button">-10</button>
         </div>
       </section>
 
-      <aside class="statsPanel card" aria-label="Statistiques">
-        <div class="statsTop">
-          <h2>Stats</h2>
+      <aside class="hud card" aria-label="Stats">
+        <div class="hudTop">
+          <div class="hudTitle">Stats</div>
           <div class="topRightBtns">
             <button id="lockBtn" class="ghostBtn" type="button" title="Essayer de forcer le mode paysage">Paysage</button>
+            <button id="optionsBtn" class="ghostBtn" type="button" title="MMR / delta perso">Options</button>
             <button id="resetBtn" class="ghostBtn" type="button" title="Réinitialiser">Reset</button>
           </div>
         </div>
 
-        <div class="field">
-          <span>MMR actuel (optionnel)</span>
-          <input id="currentMmrInput" inputmode="numeric" placeholder="ex: 1308" />
-          <div class="hint">Si tu mets le MMR actuel, ça calcule le MMR de départ automatiquement.</div>
+        <div class="hudStats">
+          <div class="hudLine">
+            <span>Total</span>
+            <strong id="totalDelta">0</strong>
+          </div>
+          <div class="hudLine">
+            <span>État</span>
+            <span id="isPositive" class="pill neutral">Neutre</span>
+          </div>
+          <div class="hudLine">
+            <span>MMR</span>
+            <strong id="estimatedMmr" class="dim">—</strong>
+          </div>
+          <div class="hudLine">
+            <span>Matchs</span>
+            <strong id="matchCount">0</strong>
+          </div>
         </div>
 
-        <div class="stats">
-          <div class="stat">
-            <div class="statLabel">Total</div>
-            <div id="totalDelta" class="statValue">0</div>
-          </div>
-          <div class="stat">
-            <div class="statLabel">Positif ?</div>
-            <div id="isPositive" class="pill neutral">Neutre</div>
-          </div>
-          <div class="stat">
-            <div class="statLabel">MMR estimé</div>
-            <div id="estimatedMmr" class="statValue dim">—</div>
-          </div>
-          <div class="stat">
-            <div class="statLabel">Matchs</div>
-            <div id="matchCount" class="statValue">0</div>
-          </div>
+        <div class="hudControls">
+          <button id="undoBtn" class="ghostBtn" type="button">Annuler dernier</button>
         </div>
       </aside>
-
-      <section class="historyPanel card">
-        <div class="cardHeader">
-          <h2>Historique</h2>
-          <button id="undoBtn" class="ghostBtn" type="button">Annuler</button>
-        </div>
-        <ol id="historyList" class="history" aria-label="Historique des deltas"></ol>
-        <div id="emptyState" class="empty">Ajoute un delta (+8, -9, etc.) pour commencer.</div>
-      </section>
     </main>
 
     <script src="./app.js" defer></script>
