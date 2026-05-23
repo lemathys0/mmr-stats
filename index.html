@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b1220" />
+    <title>Rocket League MMR Tracker</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="appHeader">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">RL</div>
+        <div class="brandText">
+          <div class="title">MMR Tracker</div>
+          <div class="subtitle">Rapide: +8/+9/+10 (et négatif)</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="controls card">
+        <div class="controlsInner">
+          <div class="sectionLabel">Boutons</div>
+          <div id="quickButtons" class="quickRow center" aria-label="Boutons rapides"></div>
+
+          <div class="sectionLabel">Delta perso</div>
+          <div class="customRow center">
+            <input id="customDeltaInput" inputmode="numeric" placeholder="ex: +12 ou -15" />
+            <button id="addCustomBtn" class="primaryBtn" type="button">Ajouter</button>
+          </div>
+
+          <div class="sectionLabel">Bouton perso</div>
+          <div class="customRow center">
+            <input id="customQuickBtnInput" inputmode="numeric" placeholder="ex: +7 ou -12" />
+            <button id="addQuickBtn" class="primaryBtn" type="button">Ajouter bouton</button>
+          </div>
+          <div class="quickManage center">
+            <div class="hint">Astuce: ajoute tes valeurs fréquentes, puis clique dessus comme +8.</div>
+            <div id="quickManageList" class="chipRow" aria-label="Gestion des boutons rapides"></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="statsPanel card" aria-label="Statistiques">
+        <div class="statsTop">
+          <h2>Stats</h2>
+          <button id="resetBtn" class="ghostBtn" type="button" title="Réinitialiser">Reset</button>
+        </div>
+
+        <div class="field">
+          <span>MMR actuel (optionnel)</span>
+          <input id="currentMmrInput" inputmode="numeric" placeholder="ex: 1308" />
+          <div class="hint">Si tu mets le MMR actuel, ça calcule le MMR de départ automatiquement.</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="statLabel">Total</div>
+            <div id="totalDelta" class="statValue">0</div>
+          </div>
+          <div class="stat">
+            <div class="statLabel">Positif ?</div>
+            <div id="isPositive" class="pill neutral">Neutre</div>
+          </div>
+          <div class="stat">
+            <div class="statLabel">MMR estimé</div>
+            <div id="estimatedMmr" class="statValue dim">—</div>
+          </div>
+          <div class="stat">
+            <div class="statLabel">Matchs</div>
+            <div id="matchCount" class="statValue">0</div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="historyPanel card">
+        <div class="cardHeader">
+          <h2>Historique</h2>
+          <button id="undoBtn" class="ghostBtn" type="button">Annuler</button>
+        </div>
+        <ol id="historyList" class="history" aria-label="Historique des deltas"></ol>
+        <div id="emptyState" class="empty">Ajoute un delta (+8, -9, etc.) pour commencer.</div>
+      </section>
+    </main>
+
+    <script src="./app.js" defer></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>
