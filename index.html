@@ -19,6 +19,20 @@
       </div>
     </header>
 
+    <div id="rotateOverlay" class="rotateOverlay" role="dialog" aria-modal="true" aria-label="Mode paysage requis">
+      <div class="rotateCard">
+        <div class="rotateTitle">Passe en mode paysage</div>
+        <div class="rotateText">
+          Cette app est faite pour être utilisée en <strong>horizontal</strong> (comme une Steam Deck).
+        </div>
+        <div class="rotateActions">
+          <button id="tryLockBtn" class="primaryBtn" type="button">Forcer paysage</button>
+          <button id="dismissRotateBtn" class="ghostBtn" type="button">OK</button>
+        </div>
+        <div class="rotateHint">Si “forcer” ne marche pas, tourne juste ton téléphone.</div>
+      </div>
+    </div>
+
     <main class="layout">
       <section class="controls card">
         <div class="controlsInner">
@@ -46,7 +60,10 @@
       <aside class="statsPanel card" aria-label="Statistiques">
         <div class="statsTop">
           <h2>Stats</h2>
-          <button id="resetBtn" class="ghostBtn" type="button" title="Réinitialiser">Reset</button>
+          <div class="topRightBtns">
+            <button id="lockBtn" class="ghostBtn" type="button" title="Essayer de forcer le mode paysage">Paysage</button>
+            <button id="resetBtn" class="ghostBtn" type="button" title="Réinitialiser">Reset</button>
+          </div>
         </div>
 
         <div class="field">

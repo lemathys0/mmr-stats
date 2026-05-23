@@ -95,6 +95,10 @@ function safeUuid() {
 }
 
 const els = {
+  rotateOverlay: document.getElementById("rotateOverlay"),
+  tryLockBtn: document.getElementById("tryLockBtn"),
+  dismissRotateBtn: document.getElementById("dismissRotateBtn"),
+  lockBtn: document.getElementById("lockBtn"),
   currentMmrInput: document.getElementById("currentMmrInput"),
   customDeltaInput: document.getElementById("customDeltaInput"),
   addCustomBtn: document.getElementById("addCustomBtn"),
@@ -115,6 +119,31 @@ const els = {
 let state = loadState();
 if (!Array.isArray(state.quickDeltas) || state.quickDeltas.length === 0) {
   state.quickDeltas = DEFAULT_QUICK_DELTAS.slice();
+}
+
+function isLandscapeNow() {
+  return window.matchMedia?.("(orientation: landscape)")?.matches ?? window.innerWidth >= window.innerHeight;
+}
+
+function setRotateOverlayVisible(visible) {
+  if (!els.rotateOverlay) return;
+  els.rotateOverlay.classList.toggle("show", Boolean(visible));
+}
+
+async function tryLockLandscape() {
+  try {
+    if (globalThis.screen?.orientation?.lock) {
+      await screen.orientation.lock("landscape");
+      return true;
+    }
+  } catch {
+    // ignore
+  }
+  return false;
+}
+
+function updateLandscapeUi() {
+  setRotateOverlayVisible(!isLandscapeNow());
 }
 
 function applyCurrentMmrFromInput() {
@@ -287,6 +316,18 @@ function wireEvents() {
     if (e.key === "Enter") els.addCustomBtn.click();
   });
 
+  els.lockBtn?.addEventListener("click", async () => {
+    await tryLockLandscape();
+    updateLandscapeUi();
+  });
+
+  els.tryLockBtn?.addEventListener("click", async () => {
+    await tryLockLandscape();
+    updateLandscapeUi();
+  });
+
+  els.dismissRotateBtn?.addEventListener("click", () => setRotateOverlayVisible(false));
+
   els.addQuickBtn.addEventListener("click", () => {
     const n = parseIntStrict(els.customQuickBtnInput.value);
     if (n == null || n === 0) {
@@ -311,7 +352,11 @@ function wireEvents() {
   els.resetBtn.addEventListener("click", () => {
     if (confirm("Réinitialiser l'historique et le MMR de départ ?")) resetAll();
   });
+
+  window.addEventListener("resize", updateLandscapeUi, { passive: true });
+  window.addEventListener("orientationchange", updateLandscapeUi, { passive: true });
 }
 
 wireEvents();
 render();
+updateLandscapeUi();
